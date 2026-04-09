@@ -25,10 +25,10 @@ const faqs = [
 ];
 ---
 
-<section aria-label="Common questions" class="bg-brand-background py-spacing-section">
-  <div class="mx-auto max-w-[50rem] px-spacing-lg md:px-spacing-2xl">
+<section aria-label="Common questions" class="bg-brand-background py-section">
+  <div class="mx-auto max-w-[50rem] px-lg md:px-2xl">
     <!-- Section Heading -->
-    <h2 class="mb-spacing-5xl text-center font-heading text-h1 font-medium uppercase leading-[0.95] tracking-[0.02em] text-brand-primary">
+    <h2 class="mb-5xl text-center font-heading text-h1 font-medium uppercase leading-[0.95] tracking-[0.02em] text-brand-primary">
       Common Questions
     </h2>
 
@@ -38,11 +38,11 @@ const faqs = [
         <div class="faq-item">
           <button
             id={`faq-trigger-${i}`}
-            class="flex w-full items-center justify-between py-spacing-xl text-left"
+            class="flex w-full items-center justify-between py-xl text-left"
             aria-expanded="false"
             aria-controls={`faq-answer-${i}`}
           >
-            <span class="pr-spacing-lg font-body text-body-lg font-light text-brand-primary">
+            <span class="pr-lg font-body text-body-lg font-light text-brand-primary">
               {faq.question}
             </span>
             <span class="faq-icon flex-shrink-0 text-brand-primary transition-transform" style={`transition-duration: var(--duration-normal);`} aria-hidden="true">
@@ -61,7 +61,7 @@ const faqs = [
             style={`transition-duration: var(--duration-normal); transition-timing-function: var(--ease-out-quart);`}
           >
             <div class="overflow-hidden">
-              <p class="pb-spacing-xl font-body text-body font-light leading-relaxed text-brand-muted">
+              <p class="pb-xl font-body text-body font-light leading-relaxed text-brand-muted">
                 {faq.answer}
               </p>
             </div>
@@ -71,10 +71,10 @@ const faqs = [
     </div>
 
     <!-- CTA -->
-    <div class="mt-spacing-4xl text-center">
+    <div class="mt-4xl text-center">
       <a
         href="/faq"
-        class="inline-flex items-center gap-spacing-sm font-body text-body font-light uppercase tracking-[0.15em] text-brand-primary transition-opacity hover:opacity-60"
+        class="inline-flex items-center gap-sm font-body text-body font-light uppercase tracking-[0.15em] text-brand-primary transition-opacity hover:opacity-60"
         style={`transition-duration: var(--duration-fast);`}
       >
         See all questions

@@ -26,7 +26,7 @@ const blocks = [
     imagePosition: 'left',
     width: 'w-full lg:w-[45%]',
     align: 'lg:ml-auto',
-    offset: 'lg:mt-spacing-5xl',
+    offset: 'lg:mt-5xl',
   },
   {
     id: 'simplicity',
@@ -37,29 +37,29 @@ const blocks = [
     imagePosition: 'right',
     width: 'w-full lg:w-[50%]',
     align: 'lg:mx-auto',
-    offset: 'lg:mt-spacing-5xl',
+    offset: 'lg:mt-5xl',
   },
 ];
 ---
 
-<section aria-label="What Calaire is" class="bg-brand-background py-spacing-section">
-  <div class="mx-auto max-w-[90rem] px-spacing-lg md:px-spacing-2xl">
+<section aria-label="What Calaire is" class="bg-brand-background py-section">
+  <div class="mx-auto max-w-[90rem] px-lg md:px-2xl">
     <!-- Section Heading -->
-    <h2 class="reveal-on-scroll mb-spacing-5xl max-w-[20ch] font-heading text-h1 font-medium uppercase leading-[0.95] tracking-[0.02em]">
+    <h2 class="reveal-on-scroll mb-5xl max-w-[20ch] font-heading text-h1 font-medium uppercase leading-[0.95] tracking-[0.02em]">
       One day. Everything included. No decisions required.
     </h2>
 
     <!-- Blocks -->
-    <div class="space-y-spacing-4xl lg:space-y-0">
+    <div class="space-y-4xl lg:space-y-0">
       {blocks.map((block) => (
         <div
           class={`what-calaire-block gsap-pre-hide ${block.width} ${block.align} ${block.offset}`}
           data-direction={block.imagePosition === 'right' ? 'left' : 'right'}
         >
-          <div class={`flex flex-col gap-spacing-2xl ${block.imagePosition === 'left' ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
+          <div class={`flex flex-col gap-2xl ${block.imagePosition === 'left' ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
             <!-- Text -->
             <div class="flex flex-1 flex-col justify-center">
-              <h3 class="mb-spacing-md font-body text-small font-light uppercase tracking-[0.2em] text-brand-muted">
+              <h3 class="mb-md font-body text-small font-light uppercase tracking-[0.2em] text-brand-muted">
                 {block.title}
               </h3>
               <p class="max-w-[36ch] font-body text-body-lg font-light leading-relaxed text-brand-primary">
@@ -75,7 +75,7 @@ const blocks = [
                 aria-label={block.imageAlt}
               >
                 {/* block.image placeholder — will be replaced with actual <img> tags */}
-                <div class="flex h-full w-full items-center justify-center p-spacing-lg">
+                <div class="flex h-full w-full items-center justify-center p-lg">
                   <span class="text-center font-body text-small font-light text-brand-muted" set:html={block.image} />
                 </div>
               </div>

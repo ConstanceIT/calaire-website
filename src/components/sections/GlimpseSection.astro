@@ -33,23 +33,23 @@ const timeBlocks = [
 ];
 ---
 
-<section aria-label="A glimpse of the day" class="bg-brand-background py-spacing-section">
-  <div class="mx-auto max-w-[90rem] px-spacing-lg md:px-spacing-2xl">
+<section aria-label="A glimpse of the day" class="bg-brand-background py-section">
+  <div class="mx-auto max-w-[90rem] px-lg md:px-2xl">
     <!-- Section Heading -->
-    <h2 class="reveal-on-scroll mb-spacing-5xl max-w-[22ch] font-heading text-h1 font-medium uppercase leading-[0.95] tracking-[0.02em]">
+    <h2 class="reveal-on-scroll mb-5xl max-w-[22ch] font-heading text-h1 font-medium uppercase leading-[0.95] tracking-[0.02em]">
       From sunrise yoga to candlelit dinner.
     </h2>
 
     <!-- Time Blocks -->
-    <div class="space-y-spacing-section">
+    <div class="space-y-section">
       {timeBlocks.map((block) => (
         <div
-          class="glimpse-block grid grid-cols-1 items-center gap-spacing-2xl lg:grid-cols-2 lg:gap-spacing-4xl"
+          class="glimpse-block grid grid-cols-1 items-center gap-2xl lg:grid-cols-2 lg:gap-4xl"
         >
           <!-- Image Side -->
           <div class={`glimpse-image gsap-pre-hide overflow-hidden ${block.imagePosition === 'right' ? 'lg:order-2' : 'lg:order-1'}`}>
             <div class="glimpse-image-parallax aspect-[3/2] bg-brand-surface" role="img" aria-label={block.imageAlt}>
-              <div class="flex h-full w-full items-center justify-center p-spacing-lg">
+              <div class="flex h-full w-full items-center justify-center p-lg">
                 <span class="text-center font-body text-small font-light text-brand-muted" set:html={block.image} />
               </div>
             </div>
@@ -60,7 +60,7 @@ const timeBlocks = [
             <span class="glimpse-time block font-heading text-h2 font-medium leading-none text-brand-primary/40">
               {block.time}
             </span>
-            <p class="mt-spacing-xl max-w-[36ch] font-body text-body-lg font-light leading-relaxed text-brand-primary">
+            <p class="mt-xl max-w-[36ch] font-body text-body-lg font-light leading-relaxed text-brand-primary">
               {block.text}
             </p>
           </div>
@@ -69,10 +69,10 @@ const timeBlocks = [
     </div>
 
     <!-- CTA -->
-    <div class="reveal-on-scroll mt-spacing-5xl text-center">
+    <div class="reveal-on-scroll mt-5xl text-center">
       <a
         href="/experience"
-        class="inline-flex items-center gap-spacing-sm font-body text-body font-light uppercase tracking-[0.15em] text-brand-primary transition-opacity hover:opacity-60"
+        class="inline-flex items-center gap-sm font-body text-body font-light uppercase tracking-[0.15em] text-brand-primary transition-opacity hover:opacity-60"
         style={`transition-duration: var(--duration-fast);`}
       >
         See the full experience

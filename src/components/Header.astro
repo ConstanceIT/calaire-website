@@ -12,7 +12,7 @@ const navLinks = [
   style={`transition-duration: var(--duration-normal); transition-timing-function: var(--ease-out-quart);`}
   data-scrolled="false"
 >
-  <div class="mx-auto flex max-w-[90rem] items-center justify-between px-spacing-lg py-spacing-md md:px-spacing-2xl md:py-spacing-lg">
+  <div class="mx-auto flex max-w-[90rem] items-center justify-between px-lg py-md md:px-2xl md:py-lg">
     <!-- Logo -->
     <a href="/" class="group" aria-label="Calaire — Home">
       <span class="block font-heading text-[1.5rem] font-medium uppercase leading-none tracking-[0.15em] md:text-[1.75rem]">
@@ -24,7 +24,7 @@ const navLinks = [
     </a>
 
     <!-- Desktop Nav -->
-    <nav class="hidden items-center gap-spacing-2xl lg:flex" aria-label="Main navigation">
+    <nav class="hidden items-center gap-2xl lg:flex" aria-label="Main navigation">
       {navLinks.map((link) => (
         <a
           href={link.href}
@@ -36,7 +36,7 @@ const navLinks = [
       ))}
       <a
         href="/book"
-        class="inline-flex items-center justify-center bg-brand-primary px-spacing-xl py-spacing-sm font-body text-small font-light uppercase tracking-[0.15em] text-brand-white transition-colors hover:bg-brand-primary-hover"
+        class="inline-flex items-center justify-center bg-brand-primary px-xl py-sm font-body text-small font-light uppercase tracking-[0.15em] text-brand-white transition-colors hover:bg-brand-primary-hover"
         style={`transition-duration: var(--duration-normal);`}
       >
         Reserve Your Place
@@ -46,7 +46,7 @@ const navLinks = [
     <!-- Mobile Menu Button -->
     <button
       id="mobile-menu-toggle"
-      class="flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-[5px] p-spacing-sm lg:hidden"
+      class="flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-[5px] p-sm lg:hidden"
       aria-label="Open menu"
       aria-expanded="false"
       aria-controls="mobile-menu"
@@ -64,7 +64,7 @@ const navLinks = [
     style={`transition-duration: var(--duration-slow);`}
     aria-hidden="true"
   >
-    <nav class="flex flex-col items-center gap-spacing-3xl" aria-label="Mobile navigation">
+    <nav class="flex flex-col items-center gap-3xl" aria-label="Mobile navigation">
       {navLinks.map((link) => (
         <a
           href={link.href}
@@ -75,7 +75,7 @@ const navLinks = [
       ))}
       <a
         href="/book"
-        class="mobile-menu-link mt-spacing-xl inline-flex items-center justify-center bg-brand-primary px-spacing-3xl py-spacing-md font-body text-body font-light uppercase tracking-[0.15em] text-brand-white"
+        class="mobile-menu-link mt-xl inline-flex items-center justify-center bg-brand-primary px-3xl py-md font-body text-body font-light uppercase tracking-[0.15em] text-brand-white"
       >
         Reserve Your Place
       </a>

@@ -14,10 +14,10 @@ const legalLinks = [
 const year = new Date().getFullYear();
 ---
 
-<footer class="bg-brand-surface pt-spacing-section pb-spacing-3xl">
-  <div class="mx-auto max-w-[90rem] px-spacing-lg md:px-spacing-2xl">
+<footer class="bg-brand-surface pt-section pb-3xl">
+  <div class="mx-auto max-w-[90rem] px-lg md:px-2xl">
     <!-- Logo -->
-    <div class="mb-spacing-4xl text-center">
+    <div class="mb-4xl text-center">
       <a href="/" aria-label="Calaire — Home">
         <span class="block font-heading text-[2rem] font-medium uppercase leading-none tracking-[0.15em] md:text-[2.5rem]">
           Calaire
@@ -29,7 +29,7 @@ const year = new Date().getFullYear();
     </div>
 
     <!-- Navigation -->
-    <nav class="mb-spacing-3xl flex flex-wrap items-center justify-center gap-spacing-xl md:gap-spacing-2xl" aria-label="Footer navigation">
+    <nav class="mb-3xl flex flex-wrap items-center justify-center gap-xl md:gap-2xl" aria-label="Footer navigation">
       {navLinks.map((link) => (
         <a
           href={link.href}
@@ -42,10 +42,10 @@ const year = new Date().getFullYear();
     </nav>
 
     <!-- Divider -->
-    <div class="mx-auto mb-spacing-3xl h-px max-w-[20rem] bg-brand-border"></div>
+    <div class="mx-auto mb-3xl h-px max-w-[20rem] bg-brand-border"></div>
 
     <!-- Contact -->
-    <div class="mb-spacing-3xl text-center">
+    <div class="mb-3xl text-center">
       <a
         href="mailto:hello@calaire.club"
         class="font-body text-body font-light text-brand-muted transition-colors hover:text-brand-primary"
@@ -57,19 +57,19 @@ const year = new Date().getFullYear();
     </div>
 
     <!-- Social Links -->
-    <div class="mb-spacing-3xl flex items-center justify-center gap-spacing-xl">
+    <div class="mb-3xl flex items-center justify-center gap-xl">
       <!-- PLACEHOLDER: Replace with real social links and icons when available -->
       <span class="font-body text-small font-light uppercase tracking-[0.15em] text-brand-muted">Instagram</span>
     </div>
 
     <!-- Location -->
-    <p class="mb-spacing-2xl text-center font-body text-small font-light tracking-[0.1em] text-brand-muted">
+    <p class="mb-2xl text-center font-body text-small font-light tracking-[0.1em] text-brand-muted">
       Austin, Texas
     </p>
 
     <!-- Legal & Copyright -->
-    <div class="flex flex-col items-center gap-spacing-sm text-center">
-      <div class="flex flex-wrap items-center justify-center gap-spacing-lg">
+    <div class="flex flex-col items-center gap-sm text-center">
+      <div class="flex flex-wrap items-center justify-center gap-lg">
         {legalLinks.map((link) => (
           <a
             href={link.href}
