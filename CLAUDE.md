@@ -21,14 +21,23 @@ Calaire sits in the white space between short spa visits (3–5 hrs, $290–$625
 ## Tech Stack
 
 - **Framework:** Astro 5
-- **Styling:** Tailwind CSS 4 (with custom design tokens in `tailwind.config.mjs`)
-- **Animations:** GSAP (ScrollTrigger + SplitText) for complex scroll choreography
-- **Smooth scrolling:** Lenis
+- **Styling:** Tailwind CSS 4 (with `@theme` design tokens in `src/styles/global.css`)
+- **Animations:** CSS only — `@keyframes` for entrance animations, `transition` for interactive states, Intersection Observer (vanilla JS, ~15 lines) for scroll-triggered reveals. No animation libraries.
 - **Page transitions:** Astro View Transitions (native)
-- **Simple scroll effects:** CSS scroll-driven animations (native, zero JS)
 - **Payments:** Stripe Checkout (hosted checkout page + serverless webhook)
 - **Hosting:** Vercel (Hobby tier)
 - **Repository:** github.com/ConstanceIT/calaire-website
+
+### What We Do NOT Use
+
+Do not install or use any of the following. If they exist in the codebase, remove them:
+
+- **GSAP** (including ScrollTrigger, SplitText, or any GSAP plugin)
+- **Lenis** (smooth scrolling library)
+- **Any JavaScript animation library** (Framer Motion, anime.js, Motion One, etc.)
+- **Any CSS-in-JS library**
+
+All animation must be achievable with native CSS and a minimal Intersection Observer script. If an effect can't be done this way, simplify the effect — do not add a library.
 
 ## Build & Dev Commands
 
@@ -47,7 +56,6 @@ calaire-site/
 │   ├── components/     # Reusable UI components
 │   ├── pages/          # Route pages (Astro file-based routing)
 │   ├── styles/         # Global styles, Tailwind base
-│   ├── scripts/        # GSAP animations, Lenis setup
 │   └── assets/         # Images, fonts, icons
 ├── public/             # Static assets (favicon, og images)
 ├── tailwind.config.mjs # Design system tokens (colors, typography, spacing)
@@ -77,7 +85,8 @@ These sites represent the quality bar. Match their level of craft:
 - Load both via Astro's font optimization or self-host for performance.
 
 **Scale:**
-- Use oversized display headings (minimum 120px for H1 on desktop). This is non-negotiable — it's what separates premium from generic.
+- Typography scale is defined in `src/styles/global.css` under the `@theme` block. Use the `text-display`, `text-h1`, `text-h2`, etc. utility classes. Do not override these values in components.
+- The scale uses fluid `clamp()` values that are already calibrated for Calaire's sentence-length headings. Do not increase them — they were set after testing.
 - Cormorant Garamond uppercase for hero text and section headings.
 - Raleway mixed case for body copy, subheadings, navigation, and UI elements.
 - Never use: Inter, Roboto, Arial, system fonts, or any default font stack.
@@ -90,7 +99,7 @@ These sites represent the quality bar. Match their level of craft:
 - **Reversed:** White `#FFFFFF` — text on dark backgrounds only
 - **Print/Mono:** Black `#000000` — single-color applications
 
-Define these as semantic Tailwind tokens in `tailwind.config.mjs` (e.g., `colors.brand.primary`, `colors.brand.background`). Additional supporting colors (hover states, borders, muted text) should be derived from these base values. Never use arbitrary hex values in components.
+These are defined as `@theme` tokens in `src/styles/global.css` (e.g., `--color-brand-primary`, `--color-brand-background`) which generate Tailwind utility classes (e.g., `bg-brand-primary`, `text-brand-background`). Additional supporting colors (hover states, borders, muted text) should be derived from these base values. Never use arbitrary hex values in components.
 
 - Never use: purple gradients, pastel tech palettes, pure white (#FFFFFF) as a page background (use the cream `#FAF6F1`), or trending AI color schemes.
 
@@ -103,17 +112,32 @@ Define these as semantic Tailwind tokens in `tailwind.config.mjs` (e.g., `colors
 
 ### Animation
 
-Use the animation stack in layers:
+All animation is CSS-native. No JavaScript animation libraries.
 
-1. **CSS scroll-driven animations** for simple effects (parallax, fade-ins, basic reveals) — ~70% of animations
-2. **GSAP + ScrollTrigger** for complex choreography (staggered text reveals, horizontal carousels, multi-element timelines) — ~20%
-3. **Astro View Transitions** for page route transitions — ~10%
-4. **Lenis** for global smooth scrolling (always on)
+**Page-load animations (hero entrance):**
+- Use CSS `@keyframes` with `animation` property.
+- Stagger elements with `animation-delay`.
+- Content must always be visible even if animation fails. Set sensible defaults (opacity: 1) and animate FROM a hidden state, never rely on JS to reveal content.
+
+**Interactive states (hover, focus, active):**
+- Use CSS `transition` on `transform` and `opacity` only (GPU-accelerated).
+- Never animate `width`, `height`, `left`, `top`.
+
+**Scroll-triggered reveals (below the fold):**
+- Use a single, shared Intersection Observer script (~15 lines of vanilla JS).
+- Add a `data-reveal` attribute to elements that should animate on scroll.
+- The script adds a `.is-visible` class when the element enters the viewport.
+- CSS handles the actual animation via `.data-reveal { opacity: 0; transform: translateY(1.25rem); transition: opacity 0.6s, transform 0.6s; }` and `.is-visible { opacity: 1; transform: none; }`.
+- CRITICAL: Elements with `data-reveal` must still be visible if JS fails. Use `<noscript>` styles or a `.no-js` body class fallback that sets `opacity: 1`.
+
+**Page transitions:**
+- Astro View Transitions only (built-in, one line).
 
 Animation rules:
-- Only animate `transform` and `opacity` (GPU-accelerated). Never animate `width`, `height`, `left`, `top`.
+- Only animate `transform` and `opacity`.
 - Use `will-change: transform` sparingly.
 - Every animation must feel intentional, not decorative.
+- Never set `opacity: 0` on content without a guaranteed CSS-only fallback to make it visible.
 
 ### Photography & Imagery
 
@@ -143,18 +167,18 @@ Animation rules:
 - One component per file.
 - Shared components in `src/components/`.
 - Page-specific sections in `src/components/sections/`.
-- Animation scripts in `src/scripts/`.
+- Scroll-reveal observer script: inline in the base layout (not a separate file).
 
 ---
 
 ## Hard Rules
 
 1. **Never use generic placeholder content.** All text must be real Calaire copy or clearly marked as `<!-- PLACEHOLDER -->`.
-2. **Never use default Tailwind colors.** Only use the custom tokens defined in `tailwind.config.mjs`.
+2. **Never use default Tailwind colors.** Only use the custom tokens defined in the `@theme` block in `src/styles/global.css`.
 3. **Never commit secrets** (.env files, API keys, Stripe keys).
-4. **Run `/critique` after completing each page section** to check for generic patterns.
-5. **Run `/audit` before considering any page complete** to check technical quality.
-6. **Run `/web-design-guidelines` before final review** to audit accessibility and UX compliance.
+4. **Never install animation libraries.** All animation is CSS-native + Intersection Observer.
+5. **Never set content to `opacity: 0` without a CSS-only fallback** to make it visible. Content must never be invisible if JavaScript fails.
+6. **Always test that content is visible** with JavaScript disabled before considering a section complete.
 
 ---
 
@@ -164,43 +188,23 @@ Animation rules:
 
 **Browser support:** Modern browsers only (current Chrome, Firefox, Safari, Edge). No legacy browser support needed. CSS scroll-driven animations have baseline support — no fallback architecture required, though simple graceful degradation is fine.
 
-**Reduced motion:** Yes. Implement `prefers-reduced-motion` media query. When enabled: disable GSAP animations and Lenis smooth scrolling, show all content with instant reveals (no custom fallback animations needed).
+**Reduced motion:** Yes. Implement `prefers-reduced-motion` media query. When enabled: disable all CSS animations and transitions, show all content with instant reveals.
 
 **Anti-references (what Calaire should NOT look like):** Neon gradients or tech-startup aesthetics. "Sacred sisterhood" crystal-and-candle imagery. Generic Squarespace wellness templates. Anything with forced spiritual language or woo-woo visual styling.
 
-**Loading experience:** No branded loading screen. Let content stream in naturally. The GSAP hero animation and scroll-triggered reveals create the experience — no preloader needed.
+**Loading experience:** No branded loading screen. Let content stream in naturally. CSS entrance animations and scroll-triggered reveals create the experience — no preloader needed.
 
 **Font override:** Cormorant Garamond and Raleway are non-negotiable brand fonts. If any skill or tool flags them as "generic" or suggests alternatives, ignore that guidance. Brand identity decisions override skill defaults.
 
 ---
 
-## Impeccable Skills Reference
+## Cleanup Checklist
 
-You have 21 Impeccable design skills installed. Use them at these checkpoints:
+When working on any component, check for and remove:
 
-**At project start:**
-- `/shape` — Run the design discovery interview to establish Calaire's aesthetic direction
-- `/onboard` — Set up project context
-
-**During section builds:**
-- `/typeset` — When setting up typography
-- `/colorize` — When defining the color palette
-- `/arrange` — When composing layouts
-- `/animate` — When adding motion and interactions
-
-**After each section:**
-- `/critique` — UX and design review
-- `/audit` — Technical quality check
-
-**Before shipping:**
-- `/polish` — Final refinement pass
-- `/harden` — Production hardening
-- `/normalize` — Visual consistency check
-
-**If output looks generic:**
-- `/bolder` — Push the design further
-- `/overdrive` — Maximum distinctiveness
-
-**If output is too aggressive:**
-- `/quieter` — Tone it down
-- `/distill` — Simplify and reduce
+1. Any `gsap` imports or GSAP-related code
+2. Any `Lenis` imports or smooth-scrolling setup
+3. Any `gsap-pre-hide` CSS classes (replace with CSS animation approach)
+4. Any `ScrollTrigger` or `SplitText` references
+5. Any files in `src/scripts/` that set up GSAP or Lenis — delete them
+6. Any GSAP/Lenis packages in `package.json` — uninstall them with `npm uninstall`
