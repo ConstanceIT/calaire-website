@@ -37,7 +37,7 @@ const navLinks = [
       ))}
       <a
         href="/book"
-        class="inline-flex items-center justify-center bg-brand-primary px-xl py-sm font-body text-small font-light uppercase tracking-[0.15em] text-brand-white transition-colors hover:bg-brand-primary-hover"
+        class="header-cta inline-flex items-center justify-center bg-brand-primary px-xl py-sm font-body text-small font-light uppercase tracking-[0.15em] text-brand-white transition-colors hover:bg-brand-primary-hover"
         style={`transition-duration: var(--duration-normal);`}
       >
         Reserve Your Place
@@ -65,7 +65,7 @@ const navLinks = [
     style={`transition-duration: var(--duration-slow);`}
     aria-hidden="true"
   >
-    <nav class="flex flex-col items-center gap-3xl" aria-label="Mobile navigation">
+    <nav class="flex flex-col items-center gap-3xl text-brand-primary" aria-label="Mobile navigation">
       {navLinks.map((link) => (
         <a
           href={link.href}
@@ -106,7 +106,7 @@ const navLinks = [
     color: var(--color-brand-primary);
   }
 
-  #site-header[data-scrolled="true"] a {
+  #site-header[data-scrolled="true"] a:not(.header-cta) {
     color: var(--color-brand-primary);
   }
 </style>
