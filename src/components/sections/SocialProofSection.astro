@@ -8,39 +8,47 @@
 /* PLACEHOLDER: Replace with real testimonials post-launch */
 const primaryQuote = {
   text: "I didn't realize how much tension I was carrying until it was gone. I came home and had patience with my kids for the first time in weeks.",
-  attribution: '<!-- PLACEHOLDER: Real name and detail -->',
+  attribution: 'Sarah, mother of two',
 };
 
 const secondaryQuotes = [
   {
     text: "I've wanted to do a retreat for years but couldn't justify being away overnight. This was exactly what I needed.",
-    attribution: '<!-- PLACEHOLDER: Real name and detail -->',
+    attribution: 'Kate, marketing director',
   },
   {
     text: 'No one tried to sell me anything. No one asked me to share my feelings in a circle. I just... rested.',
-    attribution: '<!-- PLACEHOLDER: Real name and detail -->',
+    attribution: 'Rachel, Austin',
   },
 ];
 ---
 
-<section aria-label="What women are saying" class="bg-brand-background py-section">
+<section aria-label="What women are saying" class="border-t border-brand-border bg-brand-surface py-section">
   <div class="mx-auto max-w-[90rem] px-lg md:px-2xl">
     <h2 class="sr-only">What women are saying</h2>
 
     <!-- Primary Quote -->
+    <!-- PLACEHOLDER: Aspirational — replace with real testimonial post-launch -->
     <blockquote class="reveal-on-scroll mx-auto max-w-[50rem] text-center">
       <p class="font-heading text-h3 font-medium italic leading-snug text-brand-primary">
         &ldquo;{primaryQuote.text}&rdquo;
       </p>
+      <footer class="mt-lg font-body text-small font-light text-brand-muted">
+        &mdash; {primaryQuote.attribution}
+      </footer>
     </blockquote>
 
     <!-- Secondary Quotes -->
     <div class="mx-auto mt-5xl grid max-w-[60rem] grid-cols-1 gap-4xl md:grid-cols-2">
       {secondaryQuotes.map((quote) => (
+        /* PLACEHOLDER: Aspirational — replace with real testimonial post-launch */
         <blockquote class="reveal-on-scroll-delayed">
           <p class="font-body text-body-lg font-light leading-relaxed text-brand-muted">
             &ldquo;{quote.text}&rdquo;
           </p>
+          <footer class="mt-lg font-body text-small font-light text-brand-muted">
+            &mdash; {quote.attribution}
+          </footer>
         </blockquote>
       ))}
     </div>

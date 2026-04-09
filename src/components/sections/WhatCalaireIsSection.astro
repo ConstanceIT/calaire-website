@@ -10,7 +10,7 @@ const blocks = [
     id: 'format',
     title: 'The Format',
     text: "A full Saturday, 10am to 9pm. Not a spa appointment. Not a class. A complete day of wellness — structured so you don't have to think about what comes next.",
-    image: '<!-- IMAGE: A woman mid-yoga stretch in a warm, naturally-lit studio. Soft focus. She looks relaxed, not performative. Shot from the side, not posed toward camera. -->',
+    imageLabel: 'Yoga — Woman mid-stretch, warm studio',
     imageAlt: 'A woman in a gentle yoga stretch in a warm, naturally-lit studio',
     imagePosition: 'right',
     width: 'w-full lg:w-[55%]',
@@ -21,7 +21,7 @@ const blocks = [
     id: 'experience',
     title: 'The Experience',
     text: 'Massage. Acupuncture. Yoga. Pilates. Meditation. Three chef-prepared meals. Thirty women, one venue, one price.',
-    image: '<!-- IMAGE: Close-up of hands during a massage — warm lighting, clean linens, massage oil catching the light. Intimate, not clinical. -->',
+    imageLabel: 'Massage — Hands on clean linens, warm light',
     imageAlt: 'Close-up of hands during a massage with warm lighting and clean linens',
     imagePosition: 'left',
     width: 'w-full lg:w-[45%]',
@@ -32,7 +32,7 @@ const blocks = [
     id: 'simplicity',
     title: 'The Simplicity',
     text: "One price covers everything. No add-ons, no upsells, no tipping decisions. You leave your wallet at home and your to-do list at the door.",
-    image: '<!-- IMAGE: A beautifully set communal dining table — linen napkins, ceramic plates, fresh herbs as centerpiece, natural light from nearby windows. Warm and abundant, not fussy or formal. -->',
+    imageLabel: 'Dining — Communal table with natural light',
     imageAlt: 'A beautifully set communal dining table with linen napkins and fresh herbs',
     imagePosition: 'right',
     width: 'w-full lg:w-[50%]',
@@ -67,16 +67,15 @@ const blocks = [
               </p>
             </div>
 
-            <!-- Image -->
+            <!-- IMAGE NEEDED: Replace this placeholder div with an <img> tag. -->
             <div class="what-calaire-image flex-1 overflow-hidden">
               <div
-                class="aspect-[4/3] bg-brand-surface"
+                class="aspect-[4/3] border border-brand-sage-dark bg-brand-sage"
                 role="img"
                 aria-label={block.imageAlt}
               >
-                {/* block.image placeholder — will be replaced with actual <img> tags */}
                 <div class="flex h-full w-full items-center justify-center p-lg">
-                  <span class="text-center font-body text-small font-light text-brand-muted" set:html={block.image} />
+                  <span class="text-center font-body text-small font-light text-brand-sage-dark">{block.imageLabel}</span>
                 </div>
               </div>
             </div>

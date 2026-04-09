@@ -10,7 +10,7 @@ const timeBlocks = [
     time: '10am',
     label: 'Morning',
     text: 'Arrive to a quiet room. Set your things down. The day begins with guided movement — yoga or Pilates — to settle you into your body and out of your head.',
-    image: '<!-- IMAGE: Early morning light in a studio space. A small group of women on yoga mats, spaced comfortably apart. Instructor at the front. Peaceful, not crowded. -->',
+    imageLabel: 'Morning — Small group yoga, peaceful light',
     imageAlt: 'Early morning yoga in a sunlit studio with women on mats spaced comfortably',
     imagePosition: 'left',
   },
@@ -18,7 +18,7 @@ const timeBlocks = [
     time: '2pm',
     label: 'Afternoon',
     text: "After a long lunch with no agenda, the afternoon is yours. Massage. Acupuncture. Meditation. Time to do nothing at all. There's space for whatever you need.",
-    image: '<!-- IMAGE: A woman lying on a massage table, eyes closed. Warm ambient lighting. A single candle. Clean, minimal, calm. -->',
+    imageLabel: 'Afternoon — Woman on massage table, eyes closed',
     imageAlt: 'A woman resting on a massage table with warm ambient lighting',
     imagePosition: 'right',
   },
@@ -26,14 +26,14 @@ const timeBlocks = [
     time: '7pm',
     label: 'Evening',
     text: "The day closes with dinner — a meal designed for conversation, not performance. You'll sit with women who spent the day alongside you. No one has to explain themselves.",
-    image: '<!-- IMAGE: Evening dinner scene. Warm candlelight, women seated at a long communal table, laughing naturally. Wine glasses, ceramic plates, greenery. Intimate but not staged. -->',
+    imageLabel: 'Evening — Candlelit communal dinner',
     imageAlt: 'Evening dinner with women at a candlelit communal table',
     imagePosition: 'left',
   },
 ];
 ---
 
-<section aria-label="A glimpse of the day" class="bg-brand-background py-section">
+<section aria-label="A glimpse of the day" class="bg-brand-primary py-section text-brand-white">
   <div class="mx-auto max-w-[90rem] px-lg md:px-2xl">
     <!-- Section Heading -->
     <h2 class="reveal-on-scroll mb-5xl max-w-[22ch] font-heading text-h1 font-medium uppercase leading-[0.95] tracking-[0.02em]">
@@ -46,21 +46,21 @@ const timeBlocks = [
         <div
           class="glimpse-block grid grid-cols-1 items-center gap-2xl lg:grid-cols-2 lg:gap-4xl"
         >
-          <!-- Image Side -->
+          <!-- IMAGE NEEDED: Replace this placeholder div with an <img> tag. -->
           <div class={`glimpse-image gsap-pre-hide overflow-hidden ${block.imagePosition === 'right' ? 'lg:order-2' : 'lg:order-1'}`}>
-            <div class="glimpse-image-parallax aspect-[3/2] bg-brand-surface" role="img" aria-label={block.imageAlt}>
+            <div class="glimpse-image-parallax aspect-[3/2] border border-brand-sage-dark bg-brand-sage" role="img" aria-label={block.imageAlt}>
               <div class="flex h-full w-full items-center justify-center p-lg">
-                <span class="text-center font-body text-small font-light text-brand-muted" set:html={block.image} />
+                <span class="text-center font-body text-small font-light text-brand-sage-dark">{block.imageLabel}</span>
               </div>
             </div>
           </div>
 
           <!-- Text Side -->
           <div class={`glimpse-text gsap-pre-hide ${block.imagePosition === 'right' ? 'lg:order-1' : 'lg:order-2'}`}>
-            <span class="glimpse-time block font-heading text-h2 font-medium leading-none text-brand-primary/40">
+            <span class="glimpse-time block font-heading text-h1 font-medium leading-none text-brand-sage">
               {block.time}
             </span>
-            <p class="mt-xl max-w-[36ch] font-body text-body-lg font-light leading-relaxed text-brand-primary">
+            <p class="mt-xl max-w-[36ch] font-body text-body-lg font-light leading-relaxed text-brand-white">
               {block.text}
             </p>
           </div>
@@ -72,7 +72,7 @@ const timeBlocks = [
     <div class="reveal-on-scroll mt-5xl text-center">
       <a
         href="/experience"
-        class="inline-flex items-center gap-sm font-body text-body font-light uppercase tracking-[0.15em] text-brand-primary transition-opacity hover:opacity-60"
+        class="inline-flex items-center gap-sm font-body text-body font-light uppercase tracking-[0.15em] text-brand-white transition-opacity hover:opacity-60"
         style={`transition-duration: var(--duration-fast);`}
       >
         See the full experience
@@ -155,7 +155,7 @@ const timeBlocks = [
           tl.fromTo(time, {
             opacity: 0,
           }, {
-            opacity: 0.4,
+            opacity: 1,
             duration: 1,
             ease: 'power2.out',
           }, 0);
