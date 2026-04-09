@@ -8,12 +8,12 @@ const navLinks = [
 
 <header
   id="site-header"
-  class="fixed top-0 left-0 right-0 z-50 transition-colors"
+  class="fixed top-0 left-0 right-0 z-40 transition-colors"
   style={`transition-duration: var(--duration-normal); transition-timing-function: var(--ease-out-quart);`}
   data-scrolled="false"
   data-header-theme="light"
 >
-  <div class="relative z-50 mx-auto flex max-w-[90rem] items-center justify-between px-lg py-md md:px-2xl md:py-lg">
+  <div class="mx-auto flex max-w-[90rem] items-center justify-between px-lg py-md md:px-2xl md:py-lg">
     <!-- Logo -->
     <a href="/" class="group text-center" aria-label="Calaire — Home">
       <span class="block font-heading text-[1.5rem] font-medium uppercase leading-none tracking-[0.15em] md:text-[1.75rem]">
@@ -57,70 +57,55 @@ const navLinks = [
       <span class="block h-[1px] w-6 bg-current transition-transform" style={`transition-duration: var(--duration-normal);`}></span>
     </button>
   </div>
-
-  <!-- Mobile Menu Overlay -->
-  <div
-    id="mobile-menu"
-    class="fixed inset-0 z-40 flex flex-col items-center justify-center bg-brand-background opacity-0 pointer-events-none transition-opacity lg:hidden"
-    style={`transition-duration: var(--duration-slow);`}
-    aria-hidden="true"
-  >
-    <nav class="flex flex-col items-center gap-3xl" aria-label="Mobile navigation">
-      <a href="/" class="mobile-menu-link font-heading text-h3 font-medium uppercase tracking-[0.1em]">
-        Home
-      </a>
-      {navLinks.map((link) => (
-        <a
-          href={link.href}
-          class="mobile-menu-link font-heading text-h3 font-medium uppercase tracking-[0.1em]"
-        >
-          {link.label}
-        </a>
-      ))}
-      <a
-        href="/book"
-        class="mobile-menu-cta mt-xl inline-flex items-center justify-center bg-brand-primary px-3xl py-md font-body text-body font-light uppercase tracking-[0.15em] text-brand-white"
-      >
-        Reserve Your Place
-      </a>
-    </nav>
-  </div>
 </header>
 
+<!-- Mobile Menu — sibling of header, NOT inside it -->
+<nav
+  id="mobile-menu"
+  class="fixed inset-0 z-30 flex flex-col items-center justify-center bg-brand-background opacity-0 pointer-events-none transition-opacity lg:hidden"
+  style={`transition-duration: var(--duration-slow);`}
+  aria-label="Mobile navigation"
+  aria-hidden="true"
+>
+  <a href="/" class="mobile-menu-link font-heading text-h3 font-medium uppercase tracking-[0.1em] text-brand-primary">
+    Home
+  </a>
+  {navLinks.map((link) => (
+    <a
+      href={link.href}
+      class="mobile-menu-link mt-3xl font-heading text-h3 font-medium uppercase tracking-[0.1em] text-brand-primary"
+    >
+      {link.label}
+    </a>
+  ))}
+  <a
+    href="/book"
+    class="mobile-menu-cta mt-3xl inline-flex items-center justify-center bg-brand-primary px-3xl py-md font-body text-body font-light uppercase tracking-[0.15em] text-brand-white"
+  >
+    Reserve Your Place
+  </a>
+</nav>
+
 <style>
-  /* Header scroll state — uses data attribute instead of dynamic Tailwind classes */
+  /* Header background on scroll */
   #site-header[data-scrolled="true"] {
     background-color: oklch(from var(--color-brand-background) l c h / 0.95);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
   }
 
-  #site-header[data-header-theme="light"] {
-    color: #FFFFFF;
-  }
-
+  /* Header light theme (over hero) */
+  #site-header[data-header-theme="light"],
   #site-header[data-header-theme="light"] a,
   #site-header[data-header-theme="light"] span {
     color: #FFFFFF;
   }
 
-  /* When scrolled past hero, revert to dark theme */
-  #site-header[data-scrolled="true"] {
+  /* Header dark theme (scrolled past hero) */
+  #site-header[data-header-theme="dark"],
+  #site-header[data-header-theme="dark"] a:not(.header-cta),
+  #site-header[data-header-theme="dark"] span {
     color: var(--color-brand-primary);
-  }
-
-  #site-header[data-scrolled="true"] a:not(.header-cta) {
-    color: var(--color-brand-primary);
-  }
-
-  /* Mobile menu links must always be dark on cream background, regardless of header theme */
-  #mobile-menu a {
-    color: var(--color-brand-primary) !important;
-  }
-
-  /* Exception: the Reserve Your Place button text stays white on its burgundy background */
-  #mobile-menu a.mobile-menu-cta {
-    color: var(--color-brand-white) !important;
   }
 </style>
 
@@ -132,11 +117,12 @@ const navLinks = [
     if (!header || !toggle || !menu) return;
 
     const lines = toggle.querySelectorAll('span');
-    const focusableEls = menu.querySelectorAll<HTMLElement>('a.mobile-menu-link, a.mobile-menu-cta');
+    const menuLinks = menu.querySelectorAll('a');
     let isOpen = false;
 
-    // Scroll-based header background and theme via data attribute
+    // Scroll-based header theme
     function updateHeader() {
+      if (isOpen) return; // Don't change theme while menu is open
       const scrolled = window.scrollY > 80;
       header.dataset.scrolled = String(scrolled);
       header.dataset.headerTheme = scrolled ? 'dark' : 'light';
@@ -152,12 +138,18 @@ const navLinks = [
       menu.setAttribute('aria-hidden', 'false');
       menu.classList.remove('opacity-0', 'pointer-events-none');
       menu.classList.add('opacity-100', 'pointer-events-auto');
+
+      // Hamburger to X
       lines[0].style.transform = 'rotate(45deg) translateY(3px)';
       lines[1].style.opacity = '0';
       lines[2].style.transform = 'rotate(-45deg) translateY(-3px)';
-      document.body.style.overflow = 'hidden';
+
+      // Header: dark theme + background so logo/X are visible on cream
       header.dataset.headerTheme = 'dark';
       header.dataset.scrolled = 'true';
+
+      // Lock scroll
+      document.documentElement.style.overflow = 'hidden';
     }
 
     function closeMenu() {
@@ -167,36 +159,45 @@ const navLinks = [
       menu.setAttribute('aria-hidden', 'true');
       menu.classList.add('opacity-0', 'pointer-events-none');
       menu.classList.remove('opacity-100', 'pointer-events-auto');
+
+      // X back to hamburger
       lines[0].style.transform = '';
       lines[1].style.opacity = '';
       lines[2].style.transform = '';
-      document.body.style.overflow = '';
+
+      // Unlock scroll
+      document.documentElement.style.overflow = '';
+
+      // Restore header theme based on scroll position
       const scrolled = window.scrollY > 80;
       header.dataset.scrolled = String(scrolled);
       header.dataset.headerTheme = scrolled ? 'dark' : 'light';
+
       toggle.focus();
     }
 
-    // Toggle click
+    // Toggle
     toggle.addEventListener('click', () => {
-      if (isOpen) closeMenu();
-      else openMenu();
+      isOpen ? closeMenu() : openMenu();
     });
 
-    // Escape key closes menu
+    // Escape key
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        closeMenu();
-      }
+      if (e.key === 'Escape' && isOpen) closeMenu();
     });
 
-    // Focus trap within mobile menu
+    // Close on link click
+    menuLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        if (isOpen) closeMenu();
+      });
+    });
+
+    // Focus trap
     menu.addEventListener('keydown', (e) => {
-      if (e.key !== 'Tab' || !isOpen || focusableEls.length === 0) return;
-
-      const first = focusableEls[0];
-      const last = focusableEls[focusableEls.length - 1];
-
+      if (e.key !== 'Tab' || !isOpen || menuLinks.length === 0) return;
+      const first = menuLinks[0];
+      const last = menuLinks[menuLinks.length - 1];
       if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
         last.focus();
@@ -204,13 +205,6 @@ const navLinks = [
         e.preventDefault();
         first.focus();
       }
-    });
-
-    // Close menu on link click
-    menu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        if (isOpen) closeMenu();
-      });
     });
   }
 
