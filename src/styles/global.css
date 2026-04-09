@@ -69,7 +69,7 @@ html {
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: auto; /* Lenis handles smooth scrolling */
+  scroll-behavior: smooth;
 }
 
 body {
@@ -103,15 +103,31 @@ p {
   outline-offset: 4px;
 }
 
-/* GSAP pre-hide: prevent FOUC on elements animated by GSAP ScrollTrigger.
-   Visible immediately if JS fails or reduced motion is preferred. */
-.gsap-pre-hide {
+/* Scroll-reveal: elements with data-reveal fade in when scrolled into view */
+[data-reveal] {
   opacity: 0;
+  transform: translateY(1.25rem);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* If JS fails, show everything */
+@media (scripting: none) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gsap-pre-hide {
+  [data-reveal] {
     opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 
@@ -122,44 +138,5 @@ p {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-/* Scroll-driven animation base */
-@supports (animation-timeline: view()) {
-  .reveal-on-scroll {
-    opacity: 0;
-    transform: translateY(1.25rem);
-    animation: reveal-up linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 35%;
-  }
-
-  @keyframes reveal-up {
-    from {
-      opacity: 0;
-      transform: translateY(1.25rem);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .reveal-on-scroll-delayed {
-    opacity: 0;
-    transform: translateY(1.25rem);
-    animation: reveal-up linear both;
-    animation-timeline: view();
-    animation-range: entry 10% entry 40%;
-  }
-}
-
-/* Fallback for browsers without scroll-driven animations */
-@supports not (animation-timeline: view()) {
-  .reveal-on-scroll,
-  .reveal-on-scroll-delayed {
-    opacity: 1;
-    transform: none;
   }
 }

@@ -2,7 +2,7 @@
 /**
  * Section 7: About Snippet
  * Asymmetric two columns: image 40% left, text 60% right.
- * GSAP ScrollTrigger for reveals.
+ * Scroll-reveal via Intersection Observer.
  */
 ---
 
@@ -11,7 +11,7 @@
     <h2 class="sr-only">About Calaire</h2>
     <div class="grid grid-cols-1 items-center gap-3xl lg:grid-cols-[2fr_3fr] lg:gap-4xl">
       <!-- Image (Left, 40%) -->
-      <div id="about-image" class="gsap-pre-hide overflow-hidden">
+      <div data-reveal class="overflow-hidden">
         <!-- IMAGE NEEDED: Portrait of Francesca in natural light. Replace this placeholder div with an <img> tag. -->
         <div class="aspect-[3/4] border border-brand-sage-dark bg-brand-sage" role="img" aria-label="Francesca, founder of Calaire, in a warm naturally-lit setting">
           <div class="flex h-full w-full items-center justify-center p-lg">
@@ -23,7 +23,7 @@
       </div>
 
       <!-- Text (Right, 60%) -->
-      <div id="about-text" class="gsap-pre-hide max-w-[36rem]">
+      <div data-reveal class="max-w-[36rem]">
         <p class="font-body text-body-lg font-light leading-relaxed text-brand-primary">
           Calaire was founded by Francesca, a Pilates and yoga instructor who spent years watching the same women show up to her studio running on empty.
         </p>
@@ -52,45 +52,3 @@
     </div>
   </div>
 </section>
-
-<script>
-  function initAboutAnimation() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    import('../../scripts/gsap-setup').then(({ gsap, ScrollTrigger }) => {
-      const image = document.getElementById('about-image');
-      const text = document.getElementById('about-text');
-
-      if (image) {
-        gsap.from(image, {
-          x: -60,
-          opacity: 0,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: image,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        });
-      }
-
-      if (text) {
-        gsap.from(text, {
-          x: 40,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: text,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        });
-      }
-    });
-  }
-
-  initAboutAnimation();
-  document.addEventListener('astro:after-swap', initAboutAnimation);
-</script>

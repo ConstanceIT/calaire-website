@@ -29,7 +29,7 @@ const secondaryQuotes = [
 
     <!-- Primary Quote -->
     <!-- PLACEHOLDER: Aspirational — replace with real testimonial post-launch -->
-    <blockquote class="reveal-on-scroll mx-auto max-w-[50rem] text-center">
+    <blockquote data-reveal class="mx-auto max-w-[50rem] text-center">
       <p class="font-heading text-h3 font-medium italic leading-snug text-brand-primary">
         &ldquo;{primaryQuote.text}&rdquo;
       </p>
@@ -42,7 +42,7 @@ const secondaryQuotes = [
     <div class="mx-auto mt-5xl grid max-w-[60rem] grid-cols-1 gap-4xl md:grid-cols-2">
       {secondaryQuotes.map((quote) => (
         /* PLACEHOLDER: Aspirational — replace with real testimonial post-launch */
-        <blockquote class="reveal-on-scroll-delayed">
+        <blockquote data-reveal>
           <p class="font-body text-body-lg font-light leading-relaxed text-brand-muted">
             &ldquo;{quote.text}&rdquo;
           </p>

@@ -9,7 +9,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'Curated one-day wellness retreats for women in Austin. Massage, movement, meditation, and meals — all included, all handled.' } = Astro.props;
+const { title, description = 'Curated one-day wellness retreats for women in Austin. Movement, massage, meditation, and meals. All included, all tailored to you.' } = Astro.props;
 ---
 
 <!doctype html>
@@ -33,11 +33,6 @@ const { title, description = 'Curated one-day wellness retreats for women in Aus
 
     <ClientRouter />
 
-    <noscript>
-      <style>
-        .gsap-pre-hide { opacity: 1 !important; }
-      </style>
-    </noscript>
   </head>
   <body class="bg-brand-background text-brand-primary">
     <a
@@ -53,23 +48,24 @@ const { title, description = 'Curated one-day wellness retreats for women in Aus
     <Footer />
 
     <script>
-      import { initLenis, destroyLenis, getLenis } from '../scripts/lenis';
-      import { syncScrollTriggerWithLenis } from '../scripts/gsap-setup';
+      function initReveal() {
+        const els = document.querySelectorAll('[data-reveal]');
+        if (!els.length) return;
 
-      function setup() {
-        initLenis();
-        const lenis = getLenis();
-        if (lenis) syncScrollTriggerWithLenis(lenis);
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+
+        els.forEach((el) => observer.observe(el));
       }
 
-      // Initialize on first load
-      setup();
-
-      // Re-initialize on View Transition navigation
-      document.addEventListener('astro:after-swap', () => {
-        destroyLenis();
-        setup();
-      });
+      initReveal();
+      document.addEventListener('astro:after-swap', initReveal);
     </script>
   </body>
 </html>

@@ -2,7 +2,7 @@
 /**
  * Section 4: A Glimpse of the Day
  * Vertical scroll sequence with three time blocks, alternating image/text layout.
- * GSAP ScrollTrigger for reveals, CSS scroll-driven parallax on images.
+ * Scroll-reveal via Intersection Observer, CSS scroll-driven parallax on images.
  */
 
 const timeBlocks = [
@@ -36,7 +36,7 @@ const timeBlocks = [
 <section aria-label="A glimpse of the day" class="bg-brand-primary py-section text-brand-white">
   <div class="mx-auto max-w-[90rem] px-lg md:px-2xl">
     <!-- Section Heading -->
-    <h2 class="reveal-on-scroll mb-5xl max-w-[22ch] font-heading text-h1 font-medium uppercase leading-[0.95] tracking-[0.02em]">
+    <h2 data-reveal class="mb-5xl max-w-[22ch] font-heading text-h1 font-medium uppercase leading-[0.95] tracking-[0.02em]">
       From sunrise yoga to candlelit dinner.
     </h2>
 
@@ -47,7 +47,7 @@ const timeBlocks = [
           class="glimpse-block grid grid-cols-1 items-center gap-2xl lg:grid-cols-2 lg:gap-4xl"
         >
           <!-- IMAGE NEEDED: Replace this placeholder div with an <img> tag. -->
-          <div class={`glimpse-image gsap-pre-hide overflow-hidden ${block.imagePosition === 'right' ? 'lg:order-2' : 'lg:order-1'}`}>
+          <div data-reveal class={`glimpse-image overflow-hidden ${block.imagePosition === 'right' ? 'lg:order-2' : 'lg:order-1'}`}>
             <div class="glimpse-image-parallax aspect-[3/2] border border-brand-sage-dark bg-brand-sage" role="img" aria-label={block.imageAlt}>
               <div class="flex h-full w-full items-center justify-center p-lg">
                 <span class="text-center font-body text-small font-light text-brand-sage-dark">{block.imageLabel}</span>
@@ -56,7 +56,7 @@ const timeBlocks = [
           </div>
 
           <!-- Text Side -->
-          <div class={`glimpse-text gsap-pre-hide ${block.imagePosition === 'right' ? 'lg:order-1' : 'lg:order-2'}`}>
+          <div data-reveal class={`glimpse-text ${block.imagePosition === 'right' ? 'lg:order-1' : 'lg:order-2'}`}>
             <span class="glimpse-time block font-heading text-h1 font-medium leading-none text-brand-sage">
               {block.time}
             </span>
@@ -69,7 +69,7 @@ const timeBlocks = [
     </div>
 
     <!-- CTA -->
-    <div class="reveal-on-scroll mt-5xl text-center">
+    <div data-reveal class="mt-5xl text-center">
       <a
         href="/experience"
         class="inline-flex items-center gap-sm font-body text-body font-light uppercase tracking-[0.15em] text-brand-white transition-opacity hover:opacity-60"
@@ -107,63 +107,3 @@ const timeBlocks = [
     }
   }
 </style>
-
-<script>
-  function initGlimpseAnimation() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    import('../../scripts/gsap-setup').then(({ gsap, ScrollTrigger }) => {
-      const blocks = document.querySelectorAll('.glimpse-block');
-
-      blocks.forEach((block) => {
-        const image = block.querySelector('.glimpse-image');
-        const text = block.querySelector('.glimpse-text');
-        const time = block.querySelector('.glimpse-time');
-
-        const isImageLeft = image?.classList.contains('lg:order-1');
-        const imageX = isImageLeft ? -60 : 60;
-        const textX = isImageLeft ? 60 : -60;
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: block,
-            start: 'top 75%',
-            end: 'top 40%',
-            toggleActions: 'play none none none',
-          },
-        });
-
-        if (image) {
-          tl.from(image, {
-            x: imageX,
-            opacity: 0,
-            duration: 1,
-            ease: 'power3.out',
-          }, 0);
-        }
-
-        if (text) {
-          tl.from(text, {
-            x: textX * 0.3,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-          }, 0.15);
-        }
-
-        if (time) {
-          tl.fromTo(time, {
-            opacity: 0,
-          }, {
-            opacity: 1,
-            duration: 1,
-            ease: 'power2.out',
-          }, 0);
-        }
-      });
-    });
-  }
-
-  initGlimpseAnimation();
-  document.addEventListener('astro:after-swap', initGlimpseAnimation);
-</script>

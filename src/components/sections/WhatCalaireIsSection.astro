@@ -2,7 +2,7 @@
 /**
  * Section 3: What Calaire Is
  * Asymmetric staggered grid with three blocks, alternating image positions.
- * GSAP ScrollTrigger for block reveals.
+ * Scroll-reveal via Intersection Observer.
  */
 
 const blocks = [
@@ -45,7 +45,7 @@ const blocks = [
 <section aria-label="What Calaire is" class="bg-brand-background py-section">
   <div class="mx-auto max-w-[90rem] px-lg md:px-2xl">
     <!-- Section Heading -->
-    <h2 class="reveal-on-scroll mb-5xl max-w-[20ch] font-heading text-h1 font-medium uppercase leading-[0.95] tracking-[0.02em]">
+    <h2 data-reveal class="mb-5xl max-w-[20ch] font-heading text-h1 font-medium uppercase leading-[0.95] tracking-[0.02em]">
       One day. Everything included. No decisions required.
     </h2>
 
@@ -53,7 +53,8 @@ const blocks = [
     <div class="space-y-4xl lg:space-y-0">
       {blocks.map((block) => (
         <div
-          class={`what-calaire-block gsap-pre-hide ${block.width} ${block.align} ${block.offset}`}
+          data-reveal
+          class={`what-calaire-block ${block.width} ${block.align} ${block.offset}`}
           data-direction={block.imagePosition === 'right' ? 'left' : 'right'}
         >
           <div class={`flex flex-col gap-2xl ${block.imagePosition === 'left' ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
@@ -85,48 +86,3 @@ const blocks = [
     </div>
   </div>
 </section>
-
-<script>
-  function initWhatCalaireAnimation() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    import('../../scripts/gsap-setup').then(({ gsap, ScrollTrigger }) => {
-      const blocks = document.querySelectorAll('.what-calaire-block');
-
-      blocks.forEach((block) => {
-        const direction = block.getAttribute('data-direction');
-        const xFrom = direction === 'left' ? -60 : 60;
-        const image = block.querySelector('.what-calaire-image');
-
-        gsap.from(block, {
-          x: xFrom,
-          opacity: 0,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: block,
-            start: 'top 80%',
-            end: 'top 50%',
-            toggleActions: 'play none none none',
-          },
-        });
-
-        if (image) {
-          gsap.from(image, {
-            scale: 0.95,
-            duration: 1.2,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: block,
-              start: 'top 80%',
-              toggleActions: 'play none none none',
-            },
-          });
-        }
-      });
-    });
-  }
-
-  initWhatCalaireAnimation();
-  document.addEventListener('astro:after-swap', initWhatCalaireAnimation);
-</script>

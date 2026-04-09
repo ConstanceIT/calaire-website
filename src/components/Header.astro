@@ -11,14 +11,15 @@ const navLinks = [
   class="fixed top-0 left-0 right-0 z-50 transition-colors"
   style={`transition-duration: var(--duration-normal); transition-timing-function: var(--ease-out-quart);`}
   data-scrolled="false"
+  data-header-theme="light"
 >
   <div class="mx-auto flex max-w-[90rem] items-center justify-between px-lg py-md md:px-2xl md:py-lg">
     <!-- Logo -->
-    <a href="/" class="group" aria-label="Calaire — Home">
+    <a href="/" class="group text-center" aria-label="Calaire — Home">
       <span class="block font-heading text-[1.5rem] font-medium uppercase leading-none tracking-[0.15em] md:text-[1.75rem]">
         Calaire
       </span>
-      <span class="block font-body text-[0.6rem] font-light uppercase leading-none tracking-[0.3em] mt-[0.15rem] md:text-[0.65rem]">
+      <span class="block font-body text-[0.6rem] font-light uppercase leading-none tracking-[0.3em] mt-[0.15rem] md:text-[0.65rem] text-center">
         Wellness Club
       </span>
     </a>
@@ -90,6 +91,23 @@ const navLinks = [
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
   }
+
+  #site-header[data-header-theme="light"] {
+    color: #FFFFFF;
+  }
+
+  #site-header[data-header-theme="light"] a {
+    color: #FFFFFF;
+  }
+
+  /* When scrolled past hero, revert to dark theme */
+  #site-header[data-scrolled="true"] {
+    color: var(--color-brand-primary);
+  }
+
+  #site-header[data-scrolled="true"] a {
+    color: var(--color-brand-primary);
+  }
 </style>
 
 <script>
@@ -103,9 +121,11 @@ const navLinks = [
     const focusableEls = menu.querySelectorAll<HTMLElement>('a.mobile-menu-link');
     let isOpen = false;
 
-    // Scroll-based header background via data attribute
+    // Scroll-based header background and theme via data attribute
     function updateHeader() {
-      header.dataset.scrolled = String(window.scrollY > 80);
+      const scrolled = window.scrollY > 80;
+      header.dataset.scrolled = String(scrolled);
+      header.dataset.headerTheme = scrolled ? 'dark' : 'light';
     }
 
     window.addEventListener('scroll', updateHeader, { passive: true });
