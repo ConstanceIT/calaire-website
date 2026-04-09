@@ -1,54 +1,61 @@
 ---
 /**
  * Section 1: Hero
- * Full-bleed background image, centered content, staggered GSAP SplitText animation.
+ * Full-bleed video background, centered content, staggered GSAP SplitText animation.
  */
 ---
 
 <section aria-label="Welcome" class="relative flex min-h-screen items-center justify-center overflow-hidden">
-  <!-- Background Image -->
-  <div class="absolute inset-0 z-0">
-    <!-- IMAGE NEEDED: Sunlit wellness space interior — warm wood floors, linen curtains, green foliage through large windows. Replace this placeholder div with an <img> tag. -->
-    <div
-      class="flex h-full w-full items-center justify-center border border-brand-sage-dark bg-brand-sage"
-      aria-hidden="true"
-    >
-      <span class="font-body text-body font-light text-brand-sage-dark">Hero Image — Sunlit wellness space interior</span>
-    </div>
-    <!-- Overlay for text readability -->
-    <div class="absolute inset-0 bg-brand-primary/50"></div>
-  </div>
+  <!-- Video Background (hidden on mobile) -->
+  <video
+    class="absolute inset-0 z-0 hidden h-full w-full object-cover md:block"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+  >
+    <source src="/hero-video-compressed.mp4" type="video/mp4" />
+  </video>
 
-  <!-- Parallax wrapper — CSS scroll-driven -->
-  <div class="hero-parallax absolute inset-0 z-0"></div>
+  <!-- Fallback Image (mobile only) -->
+  <img
+    src="/hero-fallback.jpg"
+    alt=""
+    aria-hidden="true"
+    class="absolute inset-0 z-0 h-full w-full object-cover md:hidden"
+  />
+
+  <!-- Dark overlay for text contrast -->
+  <div class="absolute inset-0 z-[1] bg-black/40"></div>
 
   <!-- Content -->
-  <div class="relative z-10 mx-auto max-w-[85rem] px-lg text-center text-brand-white md:px-2xl">
+  <div class="relative z-10 mx-auto max-w-[85rem] px-lg pb-20 text-center text-white md:px-2xl">
     <h1
       id="hero-headline"
-      class="mx-auto max-w-[24ch] font-heading text-display font-medium uppercase leading-[0.95] tracking-[0.03em]"
+      class="gsap-pre-hide mx-auto max-w-[20ch] font-heading text-display font-medium uppercase leading-[1] tracking-[0.03em]"
     >
       A full day designed around one idea: rest.
     </h1>
 
     <p
       id="hero-subheadline"
-      class="mx-auto mt-2xl max-w-[42ch] font-body text-body-lg font-light leading-relaxed opacity-0"
+      class="mx-auto mt-xl max-w-[50ch] font-body text-body-lg font-light leading-relaxed opacity-0"
     >
       Curated wellness retreats for women in Austin. Massage, movement, meditation, and meals — all included, all handled. Your only job is to show up.
     </p>
 
-    <div id="hero-ctas" class="mt-3xl flex flex-col items-center justify-center gap-md opacity-0 sm:flex-row sm:gap-lg">
+    <div id="hero-ctas" class="mt-2xl flex flex-col items-center justify-center gap-md opacity-0 sm:flex-row sm:gap-lg">
       <a
         href="/book"
-        class="inline-flex items-center justify-center bg-brand-primary px-xl py-md font-body text-body font-light uppercase tracking-[0.15em] text-brand-white transition-colors hover:bg-brand-primary-hover sm:px-3xl"
+        class="inline-flex items-center justify-center bg-white/20 px-xl py-md font-body text-body font-light uppercase tracking-[0.15em] text-white backdrop-blur-sm border border-white/30 transition-colors hover:bg-white/30 sm:px-3xl"
         style={`transition-duration: var(--duration-normal);`}
       >
         Reserve Your Place
       </a>
       <a
         href="/experience"
-        class="inline-flex items-center justify-center border border-brand-white/80 px-xl py-md font-body text-body font-light uppercase tracking-[0.15em] text-brand-white transition-colors hover:bg-brand-white/10 sm:px-3xl"
+        class="inline-flex items-center justify-center border border-white/60 px-xl py-md font-body text-body font-light uppercase tracking-[0.15em] text-white transition-colors hover:bg-white/10 sm:px-3xl"
         style={`transition-duration: var(--duration-normal);`}
       >
         See What's Included
@@ -57,38 +64,13 @@
   </div>
 </section>
 
-<style>
-  /* CSS scroll-driven parallax for the hero background */
-  @supports (animation-timeline: scroll()) {
-    .hero-parallax {
-      animation: hero-parallax-move linear;
-      animation-timeline: scroll();
-      animation-range: 0vh 100vh;
-    }
-
-    @keyframes hero-parallax-move {
-      from {
-        transform: translateY(0);
-      }
-      to {
-        transform: translateY(15%);
-      }
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero-parallax {
-      animation: none;
-    }
-  }
-</style>
-
 <script>
   function initHeroAnimation() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      // Show everything immediately
+      const headline = document.getElementById('hero-headline');
       const sub = document.getElementById('hero-subheadline');
       const ctas = document.getElementById('hero-ctas');
+      if (headline) headline.style.opacity = '1';
       if (sub) sub.style.opacity = '1';
       if (ctas) ctas.style.opacity = '1';
       return;
