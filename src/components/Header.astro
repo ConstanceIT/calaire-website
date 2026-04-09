@@ -65,7 +65,10 @@ const navLinks = [
     style={`transition-duration: var(--duration-slow);`}
     aria-hidden="true"
   >
-    <nav class="flex flex-col items-center gap-3xl text-brand-primary" aria-label="Mobile navigation">
+    <nav class="flex flex-col items-center gap-3xl" aria-label="Mobile navigation">
+      <a href="/" class="mobile-menu-link font-heading text-h3 font-medium uppercase tracking-[0.1em]">
+        Home
+      </a>
       {navLinks.map((link) => (
         <a
           href={link.href}
@@ -76,7 +79,7 @@ const navLinks = [
       ))}
       <a
         href="/book"
-        class="mobile-menu-link mt-xl inline-flex items-center justify-center bg-brand-primary px-3xl py-md font-body text-body font-light uppercase tracking-[0.15em] text-brand-white"
+        class="mobile-menu-cta mt-xl inline-flex items-center justify-center bg-brand-primary px-3xl py-md font-body text-body font-light uppercase tracking-[0.15em] text-brand-white"
       >
         Reserve Your Place
       </a>
@@ -109,6 +112,16 @@ const navLinks = [
   #site-header[data-scrolled="true"] a:not(.header-cta) {
     color: var(--color-brand-primary);
   }
+
+  /* Mobile menu links must always be dark on cream background, regardless of header theme */
+  #mobile-menu a {
+    color: var(--color-brand-primary) !important;
+  }
+
+  /* Exception: the Reserve Your Place button text stays white on its burgundy background */
+  #mobile-menu a.mobile-menu-cta {
+    color: var(--color-brand-white) !important;
+  }
 </style>
 
 <script>
@@ -119,7 +132,7 @@ const navLinks = [
     if (!header || !toggle || !menu) return;
 
     const lines = toggle.querySelectorAll('span');
-    const focusableEls = menu.querySelectorAll<HTMLElement>('a.mobile-menu-link');
+    const focusableEls = menu.querySelectorAll<HTMLElement>('a.mobile-menu-link, a.mobile-menu-cta');
     let isOpen = false;
 
     // Scroll-based header background and theme via data attribute
@@ -143,8 +156,6 @@ const navLinks = [
       lines[1].style.opacity = '0';
       lines[2].style.transform = 'rotate(-45deg) translateY(-3px)';
       document.body.style.overflow = 'hidden';
-      // Move focus to first menu link
-      if (focusableEls.length > 0) focusableEls[0].focus();
     }
 
     function closeMenu() {
