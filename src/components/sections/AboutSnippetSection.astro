@@ -1,0 +1,96 @@
+---
+/**
+ * Section 7: About Snippet
+ * Asymmetric two columns: image 40% left, text 60% right.
+ * GSAP ScrollTrigger for reveals.
+ */
+---
+
+<section aria-label="About Calaire" class="bg-brand-background py-spacing-section">
+  <div class="mx-auto max-w-[90rem] px-spacing-lg md:px-spacing-2xl">
+    <h2 class="sr-only">About Calaire</h2>
+    <div class="grid grid-cols-1 items-center gap-spacing-3xl lg:grid-cols-[2fr_3fr] lg:gap-spacing-4xl">
+      <!-- Image (Left, 40%) -->
+      <div id="about-image" class="gsap-pre-hide overflow-hidden">
+        <!-- IMAGE: Portrait of Francesca — warm, natural light, relaxed expression, looking slightly off-camera. Wellness setting (studio or natural backdrop). Warm tones. Approachable and confident, not posed or performative. -->
+        <div class="aspect-[3/4] bg-brand-surface" role="img" aria-label="Francesca, founder of Calaire, in a warm naturally-lit setting">
+          <div class="flex h-full w-full items-center justify-center p-spacing-lg">
+            <span class="text-center font-body text-small font-light text-brand-muted">
+              &lt;!-- IMAGE: Portrait of Francesca --&gt;
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text (Right, 60%) -->
+      <div id="about-text" class="gsap-pre-hide max-w-[36rem]">
+        <p class="font-body text-body-lg font-light leading-relaxed text-brand-primary">
+          Calaire was founded by Francesca, a Pilates and yoga instructor who spent years watching the same women show up to her studio running on empty.
+        </p>
+
+        <p class="mt-spacing-2xl font-body text-body-lg font-light leading-relaxed text-brand-primary">
+          She kept hearing the same thing: &ldquo;I need a full day to myself, but I can't leave overnight.&rdquo;
+        </p>
+
+        <p class="mt-spacing-2xl font-heading text-h4 font-medium text-brand-primary">
+          So she built one.
+        </p>
+
+        <p class="mt-spacing-2xl font-body text-body-lg font-light leading-relaxed text-brand-primary">
+          Calaire is the retreat experience these women were asking for. One day. Everything taken care of. No guilt, no logistics, no compromise.
+        </p>
+
+        <a
+          href="/about"
+          class="mt-spacing-3xl inline-flex items-center gap-spacing-sm font-body text-body font-light uppercase tracking-[0.15em] text-brand-primary transition-opacity hover:opacity-60"
+          style={`transition-duration: var(--duration-fast);`}
+        >
+          Read our story
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initAboutAnimation() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    import('../../scripts/gsap-setup').then(({ gsap, ScrollTrigger }) => {
+      const image = document.getElementById('about-image');
+      const text = document.getElementById('about-text');
+
+      if (image) {
+        gsap.from(image, {
+          x: -60,
+          opacity: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: image,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        });
+      }
+
+      if (text) {
+        gsap.from(text, {
+          x: 40,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: text,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        });
+      }
+    });
+  }
+
+  initAboutAnimation();
+  document.addEventListener('astro:after-swap', initAboutAnimation);
+</script>

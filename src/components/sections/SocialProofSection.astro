@@ -1,0 +1,48 @@
+---
+/**
+ * Section 5: Social Proof
+ * Primary quote centered large, two secondary quotes below in two columns.
+ * CSS scroll-driven fade-ins.
+ */
+
+/* PLACEHOLDER: Replace with real testimonials post-launch */
+const primaryQuote = {
+  text: "I didn't realize how much tension I was carrying until it was gone. I came home and had patience with my kids for the first time in weeks.",
+  attribution: '<!-- PLACEHOLDER: Real name and detail -->',
+};
+
+const secondaryQuotes = [
+  {
+    text: "I've wanted to do a retreat for years but couldn't justify being away overnight. This was exactly what I needed.",
+    attribution: '<!-- PLACEHOLDER: Real name and detail -->',
+  },
+  {
+    text: 'No one tried to sell me anything. No one asked me to share my feelings in a circle. I just... rested.',
+    attribution: '<!-- PLACEHOLDER: Real name and detail -->',
+  },
+];
+---
+
+<section aria-label="What women are saying" class="bg-brand-background py-spacing-section">
+  <div class="mx-auto max-w-[90rem] px-spacing-lg md:px-spacing-2xl">
+    <h2 class="sr-only">What women are saying</h2>
+
+    <!-- Primary Quote -->
+    <blockquote class="reveal-on-scroll mx-auto max-w-[50rem] text-center">
+      <p class="font-heading text-h3 font-medium italic leading-snug text-brand-primary">
+        &ldquo;{primaryQuote.text}&rdquo;
+      </p>
+    </blockquote>
+
+    <!-- Secondary Quotes -->
+    <div class="mx-auto mt-spacing-5xl grid max-w-[60rem] grid-cols-1 gap-spacing-4xl md:grid-cols-2">
+      {secondaryQuotes.map((quote) => (
+        <blockquote class="reveal-on-scroll-delayed">
+          <p class="font-body text-body-lg font-light leading-relaxed text-brand-muted">
+            &ldquo;{quote.text}&rdquo;
+          </p>
+        </blockquote>
+      ))}
+    </div>
+  </div>
+</section>

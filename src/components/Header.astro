@@ -1,0 +1,182 @@
+---
+const navLinks = [
+  { label: 'The Experience', href: '/experience' },
+  { label: 'About', href: '/about' },
+  { label: 'FAQ', href: '/faq' },
+];
+---
+
+<header
+  id="site-header"
+  class="fixed top-0 left-0 right-0 z-50 transition-colors"
+  style={`transition-duration: var(--duration-normal); transition-timing-function: var(--ease-out-quart);`}
+  data-scrolled="false"
+>
+  <div class="mx-auto flex max-w-[90rem] items-center justify-between px-spacing-lg py-spacing-md md:px-spacing-2xl md:py-spacing-lg">
+    <!-- Logo -->
+    <a href="/" class="group" aria-label="Calaire — Home">
+      <span class="block font-heading text-[1.5rem] font-medium uppercase leading-none tracking-[0.15em] md:text-[1.75rem]">
+        Calaire
+      </span>
+      <span class="block font-body text-[0.6rem] font-light uppercase leading-none tracking-[0.3em] mt-[0.15rem] md:text-[0.65rem]">
+        Wellness Club
+      </span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="hidden items-center gap-spacing-2xl lg:flex" aria-label="Main navigation">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="font-body text-small font-light uppercase tracking-[0.15em] transition-opacity hover:opacity-60"
+          style={`transition-duration: var(--duration-fast);`}
+        >
+          {link.label}
+        </a>
+      ))}
+      <a
+        href="/book"
+        class="inline-flex items-center justify-center bg-brand-primary px-spacing-xl py-spacing-sm font-body text-small font-light uppercase tracking-[0.15em] text-brand-white transition-colors hover:bg-brand-primary-hover"
+        style={`transition-duration: var(--duration-normal);`}
+      >
+        Reserve Your Place
+      </a>
+    </nav>
+
+    <!-- Mobile Menu Button -->
+    <button
+      id="mobile-menu-toggle"
+      class="flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-[5px] p-spacing-sm lg:hidden"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="block h-[1px] w-6 bg-current transition-transform" style={`transition-duration: var(--duration-normal);`}></span>
+      <span class="block h-[1px] w-4 bg-current transition-opacity" style={`transition-duration: var(--duration-normal);`}></span>
+      <span class="block h-[1px] w-6 bg-current transition-transform" style={`transition-duration: var(--duration-normal);`}></span>
+    </button>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div
+    id="mobile-menu"
+    class="fixed inset-0 z-40 flex flex-col items-center justify-center bg-brand-background opacity-0 pointer-events-none transition-opacity lg:hidden"
+    style={`transition-duration: var(--duration-slow);`}
+    aria-hidden="true"
+  >
+    <nav class="flex flex-col items-center gap-spacing-3xl" aria-label="Mobile navigation">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="mobile-menu-link font-heading text-h3 font-medium uppercase tracking-[0.1em]"
+        >
+          {link.label}
+        </a>
+      ))}
+      <a
+        href="/book"
+        class="mobile-menu-link mt-spacing-xl inline-flex items-center justify-center bg-brand-primary px-spacing-3xl py-spacing-md font-body text-body font-light uppercase tracking-[0.15em] text-brand-white"
+      >
+        Reserve Your Place
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* Header scroll state — uses data attribute instead of dynamic Tailwind classes */
+  #site-header[data-scrolled="true"] {
+    background-color: oklch(from var(--color-brand-background) l c h / 0.95);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+</style>
+
+<script>
+  function initHeader() {
+    const header = document.getElementById('site-header');
+    const toggle = document.getElementById('mobile-menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    if (!header || !toggle || !menu) return;
+
+    const lines = toggle.querySelectorAll('span');
+    const focusableEls = menu.querySelectorAll<HTMLElement>('a.mobile-menu-link');
+    let isOpen = false;
+
+    // Scroll-based header background via data attribute
+    function updateHeader() {
+      header.dataset.scrolled = String(window.scrollY > 80);
+    }
+
+    window.addEventListener('scroll', updateHeader, { passive: true });
+    updateHeader();
+
+    function openMenu() {
+      isOpen = true;
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Close menu');
+      menu.setAttribute('aria-hidden', 'false');
+      menu.classList.remove('opacity-0', 'pointer-events-none');
+      menu.classList.add('opacity-100', 'pointer-events-auto');
+      lines[0].style.transform = 'rotate(45deg) translateY(3px)';
+      lines[1].style.opacity = '0';
+      lines[2].style.transform = 'rotate(-45deg) translateY(-3px)';
+      document.body.style.overflow = 'hidden';
+      // Move focus to first menu link
+      if (focusableEls.length > 0) focusableEls[0].focus();
+    }
+
+    function closeMenu() {
+      isOpen = false;
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+      menu.setAttribute('aria-hidden', 'true');
+      menu.classList.add('opacity-0', 'pointer-events-none');
+      menu.classList.remove('opacity-100', 'pointer-events-auto');
+      lines[0].style.transform = '';
+      lines[1].style.opacity = '';
+      lines[2].style.transform = '';
+      document.body.style.overflow = '';
+      toggle.focus();
+    }
+
+    // Toggle click
+    toggle.addEventListener('click', () => {
+      if (isOpen) closeMenu();
+      else openMenu();
+    });
+
+    // Escape key closes menu
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        closeMenu();
+      }
+    });
+
+    // Focus trap within mobile menu
+    menu.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab' || !isOpen || focusableEls.length === 0) return;
+
+      const first = focusableEls[0];
+      const last = focusableEls[focusableEls.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    // Close menu on link click
+    menu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) closeMenu();
+      });
+    });
+  }
+
+  initHeader();
+  document.addEventListener('astro:after-swap', initHeader);
+</script>

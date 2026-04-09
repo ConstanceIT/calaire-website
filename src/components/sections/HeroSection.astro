@@ -1,0 +1,134 @@
+---
+/**
+ * Section 1: Hero
+ * Full-bleed background image, centered content, staggered GSAP SplitText animation.
+ */
+---
+
+<section aria-label="Welcome" class="relative flex min-h-screen items-center justify-center overflow-hidden">
+  <!-- Background Image -->
+  <div class="absolute inset-0 z-0">
+    <!-- IMAGE: Wide-angle interior of a sunlit wellness space — warm wood floors, linen curtains catching soft light, green foliage visible through large windows. No people. Calm, airy, inviting. Warm ivory and sage tones. A room you want to walk into and exhale. -->
+    <div
+      class="h-full w-full bg-brand-sage"
+      aria-hidden="true"
+      style="background: linear-gradient(135deg, var(--color-brand-sage) 0%, var(--color-brand-surface) 100%);"
+    ></div>
+    <!-- Overlay for text readability -->
+    <div class="absolute inset-0 bg-brand-primary/50"></div>
+  </div>
+
+  <!-- Parallax wrapper — CSS scroll-driven -->
+  <div class="hero-parallax absolute inset-0 z-0"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 mx-auto max-w-[85rem] px-spacing-lg text-center text-brand-white md:px-spacing-2xl">
+    <h1
+      id="hero-headline"
+      class="mx-auto max-w-[18ch] font-heading text-display font-medium uppercase leading-[0.95] tracking-[0.03em]"
+    >
+      A full day designed around one idea: rest.
+    </h1>
+
+    <p
+      id="hero-subheadline"
+      class="mx-auto mt-spacing-2xl max-w-[42ch] font-body text-body-lg font-light leading-relaxed opacity-0"
+    >
+      Curated wellness retreats for women in Austin. Massage, movement, meditation, and meals — all included, all handled. Your only job is to show up.
+    </p>
+
+    <div id="hero-ctas" class="mt-spacing-3xl flex flex-col items-center justify-center gap-spacing-md opacity-0 sm:flex-row sm:gap-spacing-lg">
+      <a
+        href="/book"
+        class="inline-flex items-center justify-center bg-brand-primary px-spacing-xl py-spacing-md font-body text-body font-light uppercase tracking-[0.15em] text-brand-white transition-colors hover:bg-brand-primary-hover sm:px-spacing-3xl"
+        style={`transition-duration: var(--duration-normal);`}
+      >
+        Reserve Your Place
+      </a>
+      <a
+        href="/experience"
+        class="inline-flex items-center justify-center border border-brand-white/80 px-spacing-xl py-spacing-md font-body text-body font-light uppercase tracking-[0.15em] text-brand-white transition-colors hover:bg-brand-white/10 sm:px-spacing-3xl"
+        style={`transition-duration: var(--duration-normal);`}
+      >
+        See What's Included
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* CSS scroll-driven parallax for the hero background */
+  @supports (animation-timeline: scroll()) {
+    .hero-parallax {
+      animation: hero-parallax-move linear;
+      animation-timeline: scroll();
+      animation-range: 0vh 100vh;
+    }
+
+    @keyframes hero-parallax-move {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(15%);
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-parallax {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  function initHeroAnimation() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // Show everything immediately
+      const sub = document.getElementById('hero-subheadline');
+      const ctas = document.getElementById('hero-ctas');
+      if (sub) sub.style.opacity = '1';
+      if (ctas) ctas.style.opacity = '1';
+      return;
+    }
+
+    import('../../scripts/gsap-setup').then(({ gsap, SplitText }) => {
+      const headline = document.getElementById('hero-headline');
+      const sub = document.getElementById('hero-subheadline');
+      const ctas = document.getElementById('hero-ctas');
+
+      if (!headline) return;
+
+      const split = new SplitText(headline, { type: 'words' });
+
+      const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+
+      tl.from(split.words, {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        stagger: 0.08,
+      });
+
+      if (sub) {
+        tl.to(sub, {
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.out',
+        }, '-=0.3');
+      }
+
+      if (ctas) {
+        tl.to(ctas, {
+          opacity: 1,
+          duration: 0.5,
+          ease: 'power2.out',
+        }, '-=0.2');
+      }
+    });
+  }
+
+  initHeroAnimation();
+  document.addEventListener('astro:after-swap', initHeroAnimation);
+</script>

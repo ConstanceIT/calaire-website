@@ -1,0 +1,140 @@
+---
+/**
+ * Section 9: FAQ Teaser
+ * Accordion-style expandable items. Clean, minimal.
+ * No scroll-triggered animation — static and functional.
+ */
+
+const faqs = [
+  {
+    question: 'What exactly is a one-day wellness retreat?',
+    answer: 'A full Saturday — 10am to 9pm — of curated wellness at a private venue in Austin. Yoga, Pilates, massage, acupuncture, meditation, and three chef-prepared meals. Everything is scheduled and handled. You just arrive.',
+  },
+  {
+    question: 'Do I need experience with yoga or Pilates?',
+    answer: 'None at all. Every session is designed to meet you where you are. The instructors are experienced with all levels.',
+  },
+  {
+    question: 'What does the price cover?',
+    answer: 'Everything. Every service, every meal, every detail. No add-ons, no upsells, no surprise charges. The price you see is the only price you pay.',
+  },
+  {
+    question: 'Can I come alone?',
+    answer: "Most of our guests do. The day is designed for connection without pressure — communal meals and shared experiences create natural conversation. No forced bonding.",
+  },
+];
+---
+
+<section aria-label="Common questions" class="bg-brand-background py-spacing-section">
+  <div class="mx-auto max-w-[50rem] px-spacing-lg md:px-spacing-2xl">
+    <!-- Section Heading -->
+    <h2 class="mb-spacing-5xl text-center font-heading text-h1 font-medium uppercase leading-[0.95] tracking-[0.02em] text-brand-primary">
+      Common Questions
+    </h2>
+
+    <!-- Accordion -->
+    <div class="divide-y divide-brand-border">
+      {faqs.map((faq, i) => (
+        <div class="faq-item">
+          <button
+            id={`faq-trigger-${i}`}
+            class="flex w-full items-center justify-between py-spacing-xl text-left"
+            aria-expanded="false"
+            aria-controls={`faq-answer-${i}`}
+          >
+            <span class="pr-spacing-lg font-body text-body-lg font-light text-brand-primary">
+              {faq.question}
+            </span>
+            <span class="faq-icon flex-shrink-0 text-brand-primary transition-transform" style={`transition-duration: var(--duration-normal);`} aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1">
+                <line x1="0" y1="8" x2="16" y2="8" />
+                <line class="faq-icon-vertical" x1="8" y1="0" x2="8" y2="16" />
+              </svg>
+            </span>
+          </button>
+          <div
+            id={`faq-answer-${i}`}
+            role="region"
+            aria-labelledby={`faq-trigger-${i}`}
+            aria-hidden="true"
+            class="faq-answer grid grid-rows-[0fr] transition-[grid-template-rows]"
+            style={`transition-duration: var(--duration-normal); transition-timing-function: var(--ease-out-quart);`}
+          >
+            <div class="overflow-hidden">
+              <p class="pb-spacing-xl font-body text-body font-light leading-relaxed text-brand-muted">
+                {faq.answer}
+              </p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-spacing-4xl text-center">
+      <a
+        href="/faq"
+        class="inline-flex items-center gap-spacing-sm font-body text-body font-light uppercase tracking-[0.15em] text-brand-primary transition-opacity hover:opacity-60"
+        style={`transition-duration: var(--duration-fast);`}
+      >
+        See all questions
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-answer.is-open {
+    grid-template-rows: 1fr;
+  }
+
+  .faq-item button[aria-expanded="true"] .faq-icon-vertical {
+    transform: scaleY(0);
+  }
+
+  .faq-icon-vertical {
+    transition: transform var(--duration-normal) var(--ease-out-quart);
+    transform-origin: center;
+  }
+</style>
+
+<script>
+  function initFaqAccordion() {
+    const items = document.querySelectorAll('.faq-item');
+
+    items.forEach((item) => {
+      const button = item.querySelector('button');
+      const answer = item.querySelector('.faq-answer');
+
+      if (!button || !answer) return;
+
+      button.addEventListener('click', () => {
+        const isOpen = button.getAttribute('aria-expanded') === 'true';
+
+        // Close all others
+        items.forEach((other) => {
+          const otherBtn = other.querySelector('button');
+          const otherAnswer = other.querySelector('.faq-answer');
+          if (otherBtn && otherAnswer && other !== item) {
+            otherBtn.setAttribute('aria-expanded', 'false');
+            otherAnswer.setAttribute('aria-hidden', 'true');
+            otherAnswer.classList.remove('is-open');
+          }
+        });
+
+        // Toggle current
+        button.setAttribute('aria-expanded', String(!isOpen));
+        answer.setAttribute('aria-hidden', String(isOpen));
+        if (!isOpen) {
+          answer.classList.add('is-open');
+        } else {
+          answer.classList.remove('is-open');
+        }
+      });
+    });
+  }
+
+  initFaqAccordion();
+  document.addEventListener('astro:after-swap', initFaqAccordion);
+</script>

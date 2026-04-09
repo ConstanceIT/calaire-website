@@ -1,0 +1,133 @@
+---
+/**
+ * Section 3: What Calaire Is
+ * Asymmetric staggered grid with three blocks, alternating image positions.
+ * GSAP ScrollTrigger for block reveals.
+ */
+
+const blocks = [
+  {
+    id: 'format',
+    title: 'The Format',
+    text: "A full Saturday, 10am to 9pm. Not a spa appointment. Not a class. A complete day of wellness — structured so you don't have to think about what comes next.",
+    image: '<!-- IMAGE: A woman mid-yoga stretch in a warm, naturally-lit studio. Soft focus. She looks relaxed, not performative. Shot from the side, not posed toward camera. -->',
+    imageAlt: 'A woman in a gentle yoga stretch in a warm, naturally-lit studio',
+    imagePosition: 'right',
+    width: 'w-full lg:w-[55%]',
+    align: 'lg:mr-auto',
+    offset: '',
+  },
+  {
+    id: 'experience',
+    title: 'The Experience',
+    text: 'Massage. Acupuncture. Yoga. Pilates. Meditation. Three chef-prepared meals. Thirty women, one venue, one price.',
+    image: '<!-- IMAGE: Close-up of hands during a massage — warm lighting, clean linens, massage oil catching the light. Intimate, not clinical. -->',
+    imageAlt: 'Close-up of hands during a massage with warm lighting and clean linens',
+    imagePosition: 'left',
+    width: 'w-full lg:w-[45%]',
+    align: 'lg:ml-auto',
+    offset: 'lg:mt-spacing-5xl',
+  },
+  {
+    id: 'simplicity',
+    title: 'The Simplicity',
+    text: "One price covers everything. No add-ons, no upsells, no tipping decisions. You leave your wallet at home and your to-do list at the door.",
+    image: '<!-- IMAGE: A beautifully set communal dining table — linen napkins, ceramic plates, fresh herbs as centerpiece, natural light from nearby windows. Warm and abundant, not fussy or formal. -->',
+    imageAlt: 'A beautifully set communal dining table with linen napkins and fresh herbs',
+    imagePosition: 'right',
+    width: 'w-full lg:w-[50%]',
+    align: 'lg:mx-auto',
+    offset: 'lg:mt-spacing-5xl',
+  },
+];
+---
+
+<section aria-label="What Calaire is" class="bg-brand-background py-spacing-section">
+  <div class="mx-auto max-w-[90rem] px-spacing-lg md:px-spacing-2xl">
+    <!-- Section Heading -->
+    <h2 class="reveal-on-scroll mb-spacing-5xl max-w-[20ch] font-heading text-h1 font-medium uppercase leading-[0.95] tracking-[0.02em]">
+      One day. Everything included. No decisions required.
+    </h2>
+
+    <!-- Blocks -->
+    <div class="space-y-spacing-4xl lg:space-y-0">
+      {blocks.map((block) => (
+        <div
+          class={`what-calaire-block gsap-pre-hide ${block.width} ${block.align} ${block.offset}`}
+          data-direction={block.imagePosition === 'right' ? 'left' : 'right'}
+        >
+          <div class={`flex flex-col gap-spacing-2xl ${block.imagePosition === 'left' ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
+            <!-- Text -->
+            <div class="flex flex-1 flex-col justify-center">
+              <h3 class="mb-spacing-md font-body text-small font-light uppercase tracking-[0.2em] text-brand-muted">
+                {block.title}
+              </h3>
+              <p class="max-w-[36ch] font-body text-body-lg font-light leading-relaxed text-brand-primary">
+                {block.text}
+              </p>
+            </div>
+
+            <!-- Image -->
+            <div class="what-calaire-image flex-1 overflow-hidden">
+              <div
+                class="aspect-[4/3] bg-brand-surface"
+                role="img"
+                aria-label={block.imageAlt}
+              >
+                {/* block.image placeholder — will be replaced with actual <img> tags */}
+                <div class="flex h-full w-full items-center justify-center p-spacing-lg">
+                  <span class="text-center font-body text-small font-light text-brand-muted" set:html={block.image} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  function initWhatCalaireAnimation() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    import('../../scripts/gsap-setup').then(({ gsap, ScrollTrigger }) => {
+      const blocks = document.querySelectorAll('.what-calaire-block');
+
+      blocks.forEach((block) => {
+        const direction = block.getAttribute('data-direction');
+        const xFrom = direction === 'left' ? -60 : 60;
+        const image = block.querySelector('.what-calaire-image');
+
+        gsap.from(block, {
+          x: xFrom,
+          opacity: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: block,
+            start: 'top 80%',
+            end: 'top 50%',
+            toggleActions: 'play none none none',
+          },
+        });
+
+        if (image) {
+          gsap.from(image, {
+            scale: 0.95,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: block,
+              start: 'top 80%',
+              toggleActions: 'play none none none',
+            },
+          });
+        }
+      });
+    });
+  }
+
+  initWhatCalaireAnimation();
+  document.addEventListener('astro:after-swap', initWhatCalaireAnimation);
+</script>

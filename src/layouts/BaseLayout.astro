@@ -1,0 +1,75 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Curated one-day wellness retreats for women in Austin. Massage, movement, meditation, and meals — all included, all handled.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Raleway:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>{title} | Calaire Wellness Club</title>
+
+    <ClientRouter />
+
+    <noscript>
+      <style>
+        .gsap-pre-hide { opacity: 1 !important; }
+      </style>
+    </noscript>
+  </head>
+  <body class="bg-brand-background text-brand-primary">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-brand-primary focus:px-spacing-lg focus:py-spacing-sm focus:font-body focus:text-small focus:font-light focus:uppercase focus:tracking-[0.15em] focus:text-brand-white"
+    >
+      Skip to content
+    </a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      import { initLenis, destroyLenis, getLenis } from '../scripts/lenis';
+      import { syncScrollTriggerWithLenis } from '../scripts/gsap-setup';
+
+      function setup() {
+        initLenis();
+        const lenis = getLenis();
+        if (lenis) syncScrollTriggerWithLenis(lenis);
+      }
+
+      // Initialize on first load
+      setup();
+
+      // Re-initialize on View Transition navigation
+      document.addEventListener('astro:after-swap', () => {
+        destroyLenis();
+        setup();
+      });
+    </script>
+  </body>
+</html>
