@@ -13,7 +13,7 @@ const navLinks = [
   data-scrolled="false"
   data-header-theme="light"
 >
-  <div class="mx-auto flex max-w-[90rem] items-center justify-between px-lg py-md md:px-2xl md:py-lg">
+  <div class="relative z-50 mx-auto flex max-w-[90rem] items-center justify-between px-lg py-md md:px-2xl md:py-lg">
     <!-- Logo -->
     <a href="/" class="group text-center" aria-label="Calaire — Home">
       <span class="block font-heading text-[1.5rem] font-medium uppercase leading-none tracking-[0.15em] md:text-[1.75rem]">
@@ -156,6 +156,8 @@ const navLinks = [
       lines[1].style.opacity = '0';
       lines[2].style.transform = 'rotate(-45deg) translateY(-3px)';
       document.body.style.overflow = 'hidden';
+      header.dataset.headerTheme = 'dark';
+      header.dataset.scrolled = 'true';
     }
 
     function closeMenu() {
@@ -169,6 +171,9 @@ const navLinks = [
       lines[1].style.opacity = '';
       lines[2].style.transform = '';
       document.body.style.overflow = '';
+      const scrolled = window.scrollY > 80;
+      header.dataset.scrolled = String(scrolled);
+      header.dataset.headerTheme = scrolled ? 'dark' : 'light';
       toggle.focus();
     }
 
